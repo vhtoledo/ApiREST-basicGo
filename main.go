@@ -1,6 +1,8 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,14 +19,14 @@ var albums = []album{
 	{ID: "3", Title: "Sarah Vaughan and Clifford Brown", Artist: "Sarah Vaughan", Price: 26.99},
 }
 
+func getAlbums(c *gin.Context){
+	c.IndentedJSON(http.StatusOK, albums)
+}
+
 func main() {
 	router := gin.Default()
 
-	router.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "Hola Mundo",
-		})
-	})
+	router.GET("/albums", getAlbums);
 
 	router.Run("localhost:8080")
 }

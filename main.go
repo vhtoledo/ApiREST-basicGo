@@ -19,14 +19,30 @@ var albums = []album{
 	{ID: "3", Title: "Sarah Vaughan and Clifford Brown", Artist: "Sarah Vaughan", Price: 26.99},
 }
 
+//Funcion para devolver toda la data
 func getAlbums(c *gin.Context){
 	c.IndentedJSON(http.StatusOK, albums)
 }
+
+//Funcion para enviar data a mi lista albums
+func postAlbums(c *gin.Context){
+	var newAlbum album
+
+	if err := c.BindJSON(&newAlbum); err != nil{
+		return
+	}
+
+	albums = append(albums, newAlbum)
+
+	c.IndentedJSON(http.StatusCreated, newAlbum)
+}
+
 
 func main() {
 	router := gin.Default()
 
 	router.GET("/albums", getAlbums);
+	router.POST("/albums", postAlbums);
 
 	router.Run("localhost:8080")
 }
